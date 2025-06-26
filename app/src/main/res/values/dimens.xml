@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--coin List-->
+    <dimen name="padding_16">16.dp</dimen>
+
+
+</resources>
