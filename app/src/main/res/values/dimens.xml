@@ -2,6 +2,8 @@
 <resources>
     <!--coin List-->
     <dimen name="padding_16">16.dp</dimen>
+    <dimen name="icon_size">85.dp</dimen>
+    <dimen name="font_20_sp">20.sp</dimen>
 
 
 </resources>
