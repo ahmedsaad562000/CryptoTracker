@@ -31,7 +31,7 @@ android {
             buildConfigField(
                 type = "String",
                 name = "BASE_URL",
-                value = "\"https://api.coincap.io/v2/\""
+                value = "\"https://api.coingecko.com/api/v3/coins/\""
             )
         }
 
@@ -50,7 +50,7 @@ android {
             buildConfigField(
                 type = "String",
                 name = "BASE_URL",
-                value = "\"https://api.coincap.io/v2/\""
+                value = "\"https://api.coingecko.com/api/v3/coins/\""
             )
             //////////////////////////////////
         }
@@ -77,6 +77,7 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.gson)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
