@@ -1,6 +1,5 @@
 package com.plcoding.cryptotracker.crypto.data.dto
 
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

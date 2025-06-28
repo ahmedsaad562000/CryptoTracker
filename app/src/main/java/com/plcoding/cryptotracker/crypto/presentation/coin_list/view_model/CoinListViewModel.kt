@@ -1,11 +1,9 @@
 package com.plcoding.cryptotracker.crypto.presentation.coin_list.view_model
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.plcoding.cryptotracker.core.domain.util.onError
 import com.plcoding.cryptotracker.core.domain.util.onSuccess
-import com.plcoding.cryptotracker.crypto.domain.repo.CoinRepo
 import com.plcoding.cryptotracker.crypto.domain.usecase.LoadCoinsUseCase
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.CoinListAction
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.CoinListState
