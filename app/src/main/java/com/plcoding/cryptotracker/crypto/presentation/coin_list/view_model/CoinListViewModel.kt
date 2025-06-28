@@ -1,10 +1,12 @@
 package com.plcoding.cryptotracker.crypto.presentation.coin_list.view_model
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.plcoding.cryptotracker.core.domain.util.onError
 import com.plcoding.cryptotracker.core.domain.util.onSuccess
 import com.plcoding.cryptotracker.crypto.domain.repo.CoinRepo
+import com.plcoding.cryptotracker.crypto.domain.usecase.LoadCoinsUseCase
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.CoinListAction
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.CoinListState
 import com.plcoding.cryptotracker.crypto.presentation.models.toCoinUi
@@ -16,7 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CoinListViewModel(
-    private val coinRepo: CoinRepo
+    private val loadCoinsUseCase: LoadCoinsUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(CoinListState())
     val state = _state
@@ -44,7 +46,7 @@ class CoinListViewModel(
                 )
             }
 
-            coinRepo.getCoins().onSuccess { coins ->
+            loadCoinsUseCase().onSuccess { coins ->
                 _state.update {
                     it.copy(
                         coins = coins.map { coin -> coin.toCoinUi() },
