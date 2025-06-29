@@ -103,7 +103,7 @@ internal val previewCoin =  Coin(
     rank = 15,
     marketCapUsd = 15145415155.66,
     princeUsd =  256498.15 ,
-    changePercent24Hr = 0.1
+    changePercent24Hr = -0.1
 ).toCoinUi()
 
 

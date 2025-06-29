@@ -25,6 +25,7 @@ import com.plcoding.cryptotracker.crypto.presentation.coin_list.action.CoinListA
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.components.CoinListItem
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.components.CoinListShimmer
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.view_model.CoinListViewModel
+import com.plcoding.cryptotracker.crypto.presentation.coin_list.view_state.CoinListViewState
 import com.plcoding.cryptotracker.ui.theme.CryptoTrackerTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -33,8 +34,8 @@ import org.koin.androidx.compose.koinViewModel
 fun CoinListScreen(
     modifier: Modifier = Modifier,
     viewModel: CoinListViewModel = koinViewModel<CoinListViewModel>(),
+    state: CoinListViewState = viewModel.state.collectAsStateWithLifecycle().value
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle().value
     val context = LocalContext.current
     val pullRefreshState = rememberPullToRefreshState()
     PullToRefreshBox(
@@ -69,7 +70,7 @@ fun CoinListScreen(
 
                     CoinListItem(
                         coinUi = coin,
-                        onClick = {/* TODO */ },
+                        onClick = { viewModel.sendAction(CoinListAction.onCoinClick(coin)) },
                         modifier = Modifier.fillMaxWidth()
                     )
                     HorizontalDivider()
