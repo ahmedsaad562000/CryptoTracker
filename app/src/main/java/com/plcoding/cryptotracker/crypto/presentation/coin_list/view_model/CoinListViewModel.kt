@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.plcoding.cryptotracker.core.domain.util.NetworkError
 import com.plcoding.cryptotracker.core.domain.util.onError
 import com.plcoding.cryptotracker.core.domain.util.onSuccess
+import com.plcoding.cryptotracker.crypto.domain.usecase.LoadCoinHistoryUseCase
 import com.plcoding.cryptotracker.crypto.domain.usecase.LoadCoinsUseCase
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.action.CoinListAction
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.view_state.CoinListViewState
+import com.plcoding.cryptotracker.crypto.presentation.models.CoinUi
 import com.plcoding.cryptotracker.crypto.presentation.models.toCoinUi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -19,7 +21,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CoinListViewModel(
-    private val loadCoinsUseCase: LoadCoinsUseCase
+    private val loadCoinsUseCase: LoadCoinsUseCase,
+    private val loadCoinHistoryUseCase: LoadCoinHistoryUseCase
 ) : ViewModel() {
     private val _actionChannel = Channel<CoinListAction>(Channel.UNLIMITED)
 
@@ -53,9 +56,29 @@ class CoinListViewModel(
 
     fun handleAction(action: CoinListAction) {
         when (action) {
-            is CoinListAction.onCoinClick -> TODO()
+            is CoinListAction.onCoinClick -> navigateToCoinDetail(action.coinUi)
             is CoinListAction.onRefresh -> loadCoins()
             is CoinListAction.showError -> showToast(action.error)
+        }
+    }
+
+    private fun navigateToCoinDetail(coin: CoinUi) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    selectedCoin = coin
+                )
+            }
+            loadCoinHistoryUseCase(coinId = coin.id).onSuccess { history ->
+                _state.update {
+                    it.copy(
+                        coinHistory = history
+                    )
+                }
+            }.onError { error ->
+                showToast(error)
+            }
+            /* navigation */
         }
     }
 
