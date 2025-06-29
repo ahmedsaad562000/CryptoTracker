@@ -5,6 +5,7 @@ import com.plcoding.cryptotracker.crypto.data.data_source.CoinRemoteDataSource
 import com.plcoding.cryptotracker.crypto.data.data_source.CoinRemoteDataSourceImpl
 import com.plcoding.cryptotracker.crypto.data.repo.CoinRepoImpl
 import com.plcoding.cryptotracker.crypto.domain.repo.CoinRepo
+import com.plcoding.cryptotracker.crypto.domain.usecase.LoadCoinHistoryUseCase
 import com.plcoding.cryptotracker.crypto.domain.usecase.LoadCoinsUseCase
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.view_model.CoinListViewModel
 import io.ktor.client.engine.cio.CIO
@@ -31,5 +32,7 @@ val appModule = module {
 
     // --- Use Cases ---
     factory { LoadCoinsUseCase(coinRepo = get()) }
+    factory { LoadCoinHistoryUseCase(coinRepo = get()) }
+
 
 }
