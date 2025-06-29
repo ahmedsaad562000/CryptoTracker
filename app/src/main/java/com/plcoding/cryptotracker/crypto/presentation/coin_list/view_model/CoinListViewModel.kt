@@ -2,12 +2,15 @@ package com.plcoding.cryptotracker.crypto.presentation.coin_list.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.plcoding.cryptotracker.core.domain.util.NetworkError
 import com.plcoding.cryptotracker.core.domain.util.onError
 import com.plcoding.cryptotracker.core.domain.util.onSuccess
 import com.plcoding.cryptotracker.crypto.domain.usecase.LoadCoinsUseCase
-import com.plcoding.cryptotracker.crypto.presentation.coin_list.CoinListAction
-import com.plcoding.cryptotracker.crypto.presentation.coin_list.CoinListState
+import com.plcoding.cryptotracker.crypto.presentation.coin_list.action.CoinListAction
+import com.plcoding.cryptotracker.crypto.presentation.coin_list.view_state.CoinListViewState
 import com.plcoding.cryptotracker.crypto.presentation.models.toCoinUi
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -18,21 +21,62 @@ import kotlinx.coroutines.launch
 class CoinListViewModel(
     private val loadCoinsUseCase: LoadCoinsUseCase
 ) : ViewModel() {
-    private val _state = MutableStateFlow(CoinListState())
+    private val _actionChannel = Channel<CoinListAction>(Channel.UNLIMITED)
+
+    init {
+        observeActions()
+    }
+
+    private val _state = MutableStateFlow(CoinListViewState())
     val state = _state
         .onStart {
-            loadCoins()
+            sendAction(CoinListAction.onRefresh)
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
-            initialValue = CoinListState()
+            initialValue = CoinListViewState()
         )
 
-    fun onAction(action: CoinListAction) {
+    private fun observeActions() {
+        viewModelScope.launch {
+            for (action in _actionChannel) {
+                handleAction(action)
+            }
+        }
+    }
+
+    fun sendAction(action: CoinListAction) {
+        viewModelScope.launch {
+            _actionChannel.send(action)
+        }
+    }
+
+    fun handleAction(action: CoinListAction) {
         when (action) {
             is CoinListAction.onCoinClick -> TODO()
-            is CoinListAction.onRefresh -> {loadCoins()}
+            is CoinListAction.onRefresh -> loadCoins()
+            is CoinListAction.showError -> showToast(action.error)
+        }
+    }
 
+    private fun showToast(error: NetworkError) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    error = error,
+                )
+            }
+            delay(3000)
+            hideToast()
+        }
+
+    }
+
+    private fun hideToast() {
+        _state.update {
+            it.copy(
+                error = null
+            )
         }
     }
 
@@ -40,7 +84,8 @@ class CoinListViewModel(
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    isLoading = true
+                    isLoading = true,
+                    isRefreshing = true
                 )
             }
 
@@ -48,17 +93,20 @@ class CoinListViewModel(
                 _state.update {
                     it.copy(
                         coins = coins.map { coin -> coin.toCoinUi() },
-                        isLoading = false
+                        isLoading = false,
+                        isRefreshing = false
                     )
                 }
 
 
-            }.onError {
+            }.onError { error ->
                 _state.update {
                     it.copy(
-                        isLoading = false
+                        isLoading = false,
+                        isRefreshing = false
                     )
                 }
+                sendAction(CoinListAction.showError(error))
             }
         }
     }
