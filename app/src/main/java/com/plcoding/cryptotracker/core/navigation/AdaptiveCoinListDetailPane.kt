@@ -23,7 +23,6 @@ fun AdaptiveCoinListDetailPane(
         listPane = {
             AnimatedPane {
                 CoinListScreen(onNavigateToDetailScreen = {
-                    Log.e("AdaptiveCoinListDetailPane", "onNavigateToDetailScreen")
                     navigator.navigateTo(pane = ListDetailPaneScaffoldRole.Detail) })
             }
         },

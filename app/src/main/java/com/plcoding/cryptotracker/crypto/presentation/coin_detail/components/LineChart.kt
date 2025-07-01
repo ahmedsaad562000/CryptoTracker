@@ -55,7 +55,6 @@ fun LineChart(
     val textStyle = LocalTextStyle.current.copy(
         fontSize = style.labelFontSize
     )
-    Log.e("LineChart", "dataPoints: $dataPoints , visibleDataPointsIndices: $visibleDataPointsIndices")
     val visibleDataPoints = remember(dataPoints, visibleDataPointsIndices) {
         dataPoints.slice(visibleDataPointsIndices)
 
