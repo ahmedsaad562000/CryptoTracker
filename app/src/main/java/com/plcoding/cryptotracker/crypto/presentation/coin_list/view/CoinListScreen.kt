@@ -34,7 +34,8 @@ import org.koin.androidx.compose.koinViewModel
 fun CoinListScreen(
     modifier: Modifier = Modifier,
     viewModel: CoinListViewModel = koinViewModel<CoinListViewModel>(),
-    state: CoinListViewState = viewModel.state.collectAsStateWithLifecycle().value
+    state: CoinListViewState = viewModel.state.collectAsStateWithLifecycle().value,
+    onNavigateToDetailScreen: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val pullRefreshState = rememberPullToRefreshState()
@@ -70,7 +71,10 @@ fun CoinListScreen(
 
                     CoinListItem(
                         coinUi = coin,
-                        onClick = { viewModel.sendAction(CoinListAction.onCoinClick(coin)) },
+                        onClick = {
+                            viewModel.sendAction(CoinListAction.onCoinClick(coin))
+                            onNavigateToDetailScreen()
+                        },
                         modifier = Modifier.fillMaxWidth()
                     )
                     HorizontalDivider()

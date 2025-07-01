@@ -1,5 +1,6 @@
 package com.plcoding.cryptotracker.crypto.presentation.coin_detail.components
 
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
@@ -54,6 +55,7 @@ fun LineChart(
     val textStyle = LocalTextStyle.current.copy(
         fontSize = style.labelFontSize
     )
+    Log.e("LineChart", "dataPoints: $dataPoints , visibleDataPointsIndices: $visibleDataPointsIndices")
     val visibleDataPoints = remember(dataPoints, visibleDataPointsIndices) {
         dataPoints.slice(visibleDataPointsIndices)
 
@@ -108,7 +110,8 @@ fun LineChart(
 
                 }
 
-            }.pointerInput(drawPoints, xLabelWidth)
+            }
+            .pointerInput(drawPoints, xLabelWidth)
             {
                 detectTapGestures(onTap = { offset ->
                     val newSelectedPointIndex = getSelectedPointIndex(
@@ -141,7 +144,8 @@ fun LineChart(
         val maxXLabelWidth = xLabelTextLayoutResults.maxOfOrNull { it.size.width } ?: 0f
         val maxXLabelHeight = xLabelTextLayoutResults.maxOfOrNull { it.size.height } ?: 0f
         val maxXLabelLineCount = xLabelTextLayoutResults.maxOfOrNull { it.lineCount } ?: 0
-        val xLabelLineHeight = maxXLabelHeight.toFloat() / maxXLabelLineCount.toFloat()
+        val xLabelLineHeight =
+            if (maxXLabelLineCount > 1) maxXLabelHeight.toFloat() / maxXLabelLineCount.toFloat() else 0f
         val viewPortHeightPx =
             size.height - (maxXLabelHeight.toFloat() + verticalPaddingPx * 2 + xLabelLineHeight + xAxisLabelSpacingPx)
 
@@ -278,7 +282,7 @@ fun LineChart(
 
         drawPoints = visibleDataPointsIndices.map {
             val xvv =
-                viewPortLeftX + (it - visibleDataPointsIndices.first + 0.5f) * xLabelWidth -10f
+                viewPortLeftX + (it - visibleDataPointsIndices.first + 0.5f) * xLabelWidth - 10f
             val ratio =
                 (dataPoints[it].y - minYValue) / (maxYValue - minYValue)
             val y = viewPortBottomY - ratio * viewPortHeightPx

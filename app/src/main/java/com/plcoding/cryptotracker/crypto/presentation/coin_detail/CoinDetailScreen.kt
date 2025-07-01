@@ -139,12 +139,11 @@ fun CoinDetailScreen(
                 )
 
             }
-            AnimatedVisibility(
-                visible = state.selectedCoin.coinPriceHistory != null
-                        && state.selectedCoin.coinPriceHistory.isNotEmpty(),
-                enter = fadeIn(),
 
-                ) {
+            AnimatedVisibility(
+                visible = !state.selectedCoin.coinPriceHistory.isNullOrEmpty(),
+                enter = fadeIn(),
+            ) {
                 var selectedDataPoint by remember {
                     mutableStateOf<DataPoint?>(null)
                 }
@@ -163,31 +162,32 @@ fun CoinDetailScreen(
                 val startIndex = ((state.selectedCoin.coinPriceHistory?.lastIndex
                     ?: 0) - amountOfVisibleDataPoints).coerceAtLeast(0)
                 val lastIndex = state.selectedCoin.coinPriceHistory?.lastIndex ?: 0
-
-                LineChart(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(16 / 9f)
-                        .onSizeChanged { totalChartWidth = it.width.toFloat() },
-                    dataPoints = state.selectedCoin.coinPriceHistory ?: emptyList(),
-                    style = ChartStyle(
-                        chartLineColor = MaterialTheme.colorScheme.primary,
-                        unselectedColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f),
-                        selectedColor = MaterialTheme.colorScheme.primary,
-                        helperLinesThicknessPx = 5f,
-                        axisLinesThicknessPx = 5f,
-                        labelFontSize = 14.sp,
-                        minYLabelSpacingDp = 25.dp,
-                        verticalPadding = 8.dp,
-                        horizontalPadding = 8.dp,
-                        xAxisLabelSpacing = 8.dp
-                    ),
-                    visibleDataPointsIndices = (startIndex..lastIndex),
-                    unit = "$",
-                    selectedDataPoint = selectedDataPoint,
-                    onSelectedDataPointChange = { selectedDataPoint = it },
-                    onXLabelWidthChange = { labelWidth = it },
-                )
+                if (!state.selectedCoin.coinPriceHistory.isNullOrEmpty()) {
+                    LineChart(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(16 / 9f)
+                            .onSizeChanged { totalChartWidth = it.width.toFloat() },
+                        dataPoints = state.selectedCoin.coinPriceHistory ?: emptyList(),
+                        style = ChartStyle(
+                            chartLineColor = MaterialTheme.colorScheme.primary,
+                            unselectedColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f),
+                            selectedColor = MaterialTheme.colorScheme.primary,
+                            helperLinesThicknessPx = 5f,
+                            axisLinesThicknessPx = 5f,
+                            labelFontSize = 14.sp,
+                            minYLabelSpacingDp = 25.dp,
+                            verticalPadding = 8.dp,
+                            horizontalPadding = 8.dp,
+                            xAxisLabelSpacing = 8.dp
+                        ),
+                        visibleDataPointsIndices = (startIndex..lastIndex),
+                        unit = "$",
+                        selectedDataPoint = selectedDataPoint,
+                        onSelectedDataPointChange = { selectedDataPoint = it },
+                        onXLabelWidthChange = { labelWidth = it },
+                    )
+                }
             }
 
         }

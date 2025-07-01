@@ -32,6 +32,8 @@ class CoinListViewModel(
         observeActions()
     }
 
+
+
     private val _state = MutableStateFlow(CoinListViewState())
     val state = _state
         .onStart {
