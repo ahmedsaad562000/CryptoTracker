@@ -42,7 +42,7 @@ class CoinRemoteDataSourceImpl(private val httpClient: HttpClient) : CoinRemoteD
             )
             {
                 parameter(key = "vs_currency", value = "usd")
-                parameter(key = "days", value = "0.25")
+                parameter(key = "days", value = "1")
             }
         }.map { response ->
             response.toCoinHistory()

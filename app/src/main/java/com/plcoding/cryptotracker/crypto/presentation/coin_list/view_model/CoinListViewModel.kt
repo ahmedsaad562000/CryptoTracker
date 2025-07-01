@@ -10,6 +10,7 @@ import com.plcoding.cryptotracker.crypto.domain.usecase.LoadCoinsUseCase
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.action.CoinListAction
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.view_state.CoinListViewState
 import com.plcoding.cryptotracker.crypto.presentation.models.CoinUi
+import com.plcoding.cryptotracker.crypto.presentation.models.DataPoint
 import com.plcoding.cryptotracker.crypto.presentation.models.toCoinUi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 
 class CoinListViewModel(
     private val loadCoinsUseCase: LoadCoinsUseCase,
@@ -69,10 +71,20 @@ class CoinListViewModel(
                     selectedCoin = coin
                 )
             }
+
             loadCoinHistoryUseCase(coinId = coin.id).onSuccess { history ->
+
                 _state.update {
                     it.copy(
-                        coinHistory = history
+                        selectedCoin = it.selectedCoin?.copy(
+                            coinPriceHistory = history.prices.map { coinPrice ->
+                                DataPoint(
+                                    xLabel = SimpleDateFormat("ha\nd/M").format(coinPrice.dateTime),
+                                    y = coinPrice.priceUsd.toFloat(),
+                                    x = coinPrice.dateTime.hours.toFloat()
+                                )
+                            }
+                        )
                     )
                 }
             }.onError { error ->

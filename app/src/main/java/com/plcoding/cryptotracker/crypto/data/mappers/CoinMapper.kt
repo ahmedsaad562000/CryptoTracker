@@ -4,10 +4,8 @@ import com.plcoding.cryptotracker.crypto.data.dto.CoinDto
 import com.plcoding.cryptotracker.crypto.data.dto.CoinHistoryDto
 import com.plcoding.cryptotracker.crypto.domain.models.Coin
 import com.plcoding.cryptotracker.crypto.domain.models.CoinHistory
+import com.plcoding.cryptotracker.crypto.domain.models.CoinPrice
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
 import java.util.Date
 
 fun CoinDto.toCoin(): Coin {
@@ -22,19 +20,31 @@ fun CoinDto.toCoin(): Coin {
     )
 }
 
-fun getDateTime(timestamp: Double): String {
-    val sdf = SimpleDateFormat("dd/MM/yy hh:mm a")
+fun getDateTime(timestamp: Double): Date {
     val netDate = Date(timestamp.toLong())
-    return sdf.format(netDate)
+    return netDate
 }
 
 fun CoinHistoryDto.toCoinHistory(): CoinHistory {
+    val pricesSize = prices?.size ?: 0
+    val step = pricesSize / 24  ///
 
     return CoinHistory(
-        prices = prices?.map { it -> Pair(first = getDateTime(it[0]), second = it[1]) }
+        prices = prices?.map { it -> CoinPrice(dateTime = getDateTime(it[0]), priceUsd = it[1]) }
             ?: emptyList(),
-        marketCaps = marketCaps?.map { it -> Pair(first = getDateTime(it[0]), second = it[1]) }
+        marketCaps = marketCaps?.map { it ->
+            CoinPrice(
+                dateTime = getDateTime(it[0]),
+                priceUsd = it[1]
+            )
+        }
             ?: emptyList(),
-        totalVolumes = totalVolumes?.map { it -> Pair(first = getDateTime(it[0]), second = it[1]) }
-            ?: emptyList())
+        totalVolumes = totalVolumes?.map { it ->
+            CoinPrice(
+                dateTime = getDateTime(it[0]),
+                priceUsd = it[1]
+            )
+        }
+            ?: emptyList(),
+    )
 }

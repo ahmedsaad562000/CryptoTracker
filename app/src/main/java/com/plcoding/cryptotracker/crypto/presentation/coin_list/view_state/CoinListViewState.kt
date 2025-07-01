@@ -12,5 +12,4 @@ data class CoinListViewState(
     val coins: List<CoinUi> = emptyList(),
     val selectedCoin: CoinUi? = null,
     val isRefreshing: Boolean = false,
-    val coinHistory: CoinHistory? = null
 )

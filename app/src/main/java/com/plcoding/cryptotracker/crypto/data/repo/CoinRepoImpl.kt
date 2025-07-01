@@ -12,8 +12,8 @@ class CoinRepoImpl(private val coinRemoteDataSource: CoinRemoteDataSource) : Coi
         return coinRemoteDataSource.getCoins()
     }
 
-    override suspend fun getCoinMarketChart(coinId: String): Result<CoinHistory, NetworkError> {
-        return coinRemoteDataSource.getCoinMarketChart(coinId = coinId)
-    }
+    override suspend fun getCoinMarketChart(coinId: String): Result<CoinHistory, NetworkError> =
+        coinRemoteDataSource.getCoinMarketChart(coinId = coinId)
+
 
 }
