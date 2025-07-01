@@ -10,7 +10,7 @@ class LoadCoinHistoryUseCase(private val coinRepo: CoinRepo) {
 
     suspend operator fun invoke(coinId: String): Result<CoinHistory, NetworkError> {
         return when (val result = coinRepo.getCoinMarketChart(coinId)) {
-            is Result.Success -> {
+            is Success -> {
                 val prices = result.data.prices
                 val n = prices.size
                 val step = if (n >= 24) n / 24 else 1

@@ -1,6 +1,5 @@
 package com.plcoding.cryptotracker.crypto.presentation.coin_detail.components
 
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
@@ -151,10 +150,10 @@ fun LineChart(
         val labelCountExcludingLastOne =
             (labelViewPortHeightPx / (xLabelLineHeight + minYLabelSpacingPx)).toInt()
         val increment =
-            (maxYValue.toFloat() - minYValue.toFloat()) / labelCountExcludingLastOne.toDouble()
+            (maxYValue - minYValue) / labelCountExcludingLastOne.toDouble()
         val yLabels = (0..labelCountExcludingLastOne).map {
             ValueLabel(
-                value = maxYValue.toFloat() - (it * increment).toFloat(),
+                value = maxYValue - (it * increment).toFloat(),
                 unit = unit
             )
         }
@@ -172,7 +171,7 @@ fun LineChart(
         val viewPortBottomY = viewPortTopY + viewPortHeightPx
         val viewPortLeftX = 2 * horizontalPaddingPx + maxYLabelWidth.toFloat()
         val viewPort = Rect(
-            left = viewPortLeftX.toFloat(),
+            left = viewPortLeftX,
             top = viewPortTopY,
             right = viewPortRightX,
             bottom = viewPortBottomY
@@ -216,7 +215,7 @@ fun LineChart(
             if (index == selectedPoint) {
 
                 val valueLabel = ValueLabel(
-                    value = visibleDataPoints[index].y.toFloat(),
+                    value = visibleDataPoints[index].y,
                     unit = unit
                 )
                 val valueResult = measurer.measure(

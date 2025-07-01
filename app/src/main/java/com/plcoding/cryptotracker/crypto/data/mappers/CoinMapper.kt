@@ -5,7 +5,6 @@ import com.plcoding.cryptotracker.crypto.data.dto.CoinHistoryDto
 import com.plcoding.cryptotracker.crypto.domain.models.Coin
 import com.plcoding.cryptotracker.crypto.domain.models.CoinHistory
 import com.plcoding.cryptotracker.crypto.domain.models.CoinPrice
-import java.text.SimpleDateFormat
 import java.util.Date
 
 fun CoinDto.toCoin(): Coin {
@@ -26,8 +25,6 @@ fun getDateTime(timestamp: Double): Date {
 }
 
 fun CoinHistoryDto.toCoinHistory(): CoinHistory {
-    val pricesSize = prices?.size ?: 0
-    val step = pricesSize / 24  ///
 
     return CoinHistory(
         prices = prices?.map { it -> CoinPrice(dateTime = getDateTime(it[0]), priceUsd = it[1]) }
