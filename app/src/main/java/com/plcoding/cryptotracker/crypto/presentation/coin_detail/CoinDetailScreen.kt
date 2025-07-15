@@ -41,6 +41,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plcoding.cryptotracker.R
+import com.plcoding.cryptotracker.core.data.util.getLastUpdatedString
+import com.plcoding.cryptotracker.core.presentation.util.toDisplayableNumber
 import com.plcoding.cryptotracker.crypto.presentation.coin_detail.components.InfoCard
 import com.plcoding.cryptotracker.crypto.presentation.coin_detail.components.LineChart
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.components.previewCoin
@@ -48,7 +50,6 @@ import com.plcoding.cryptotracker.crypto.presentation.coin_list.view_model.CoinL
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.view_state.CoinListViewState
 import com.plcoding.cryptotracker.crypto.presentation.models.ChartStyle
 import com.plcoding.cryptotracker.crypto.presentation.models.DataPoint
-import com.plcoding.cryptotracker.crypto.presentation.models.toDisplayableNumber
 import com.plcoding.cryptotracker.ui.theme.CryptoTrackerTheme
 import com.plcoding.cryptotracker.ui.theme.greenBackground
 import org.koin.androidx.compose.koinViewModel
@@ -82,12 +83,31 @@ fun CoinDetailScreen(
                 .padding(dimensionResource(R.dimen.padding_16)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = state.selectedCoin.iconRes),
-                contentDescription = state.selectedCoin.name,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(100.dp),
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
             )
+            {
+                Icon(
+
+                    imageVector = ImageVector.vectorResource(id = state.selectedCoin.iconRes),
+                    contentDescription = state.selectedCoin.name,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .align(Alignment.Center),
+                )
+                Text(
+                    modifier = Modifier.align(Alignment.TopEnd),
+                    text = "last updated: \n ${getLastUpdatedString(state.selectedCoin.lastUpdated)}",
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Light,
+                    textAlign = TextAlign.Center
+                )
+
+            }
+
             Text(
                 text = state.selectedCoin.name,
                 color = contentColor,
@@ -168,7 +188,7 @@ fun CoinDetailScreen(
                             .fillMaxWidth()
                             .aspectRatio(16 / 9f)
                             .onSizeChanged { totalChartWidth = it.width.toFloat() },
-                        dataPoints = state.selectedCoin.coinPriceHistory ?: emptyList(),
+                        dataPoints = state.selectedCoin.coinPriceHistory,
                         style = ChartStyle(
                             chartLineColor = MaterialTheme.colorScheme.primary,
                             unselectedColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f),

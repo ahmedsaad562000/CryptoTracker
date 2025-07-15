@@ -1,10 +1,10 @@
 package com.plcoding.cryptotracker.crypto.presentation.models
 
 import androidx.annotation.DrawableRes
-import com.plcoding.cryptotracker.crypto.domain.models.Coin
+import com.plcoding.cryptotracker.core.presentation.util.DisplayableNumber
 import com.plcoding.cryptotracker.core.presentation.util.getDrawableIdForCoin
-import java.text.NumberFormat
-import java.util.Locale // ✅ Add this
+import com.plcoding.cryptotracker.core.presentation.util.toDisplayableNumber
+import com.plcoding.cryptotracker.crypto.domain.models.Coin
 
 data class CoinUi(
     val id: String,
@@ -15,13 +15,9 @@ data class CoinUi(
     val princeUsd: DisplayableNumber,
     val changePercent24Hr: DisplayableNumber,
     val coinPriceHistory: List<DataPoint>? = null,
+    val lastUpdated: Long,
     @DrawableRes val iconRes: Int
 )
-data class DisplayableNumber(
-    val value: Double,
-    val formatted: String
-)
-
 
 fun Coin.toCoinUi() = CoinUi(
     id = id,
@@ -31,16 +27,8 @@ fun Coin.toCoinUi() = CoinUi(
     princeUsd = princeUsd.toDisplayableNumber(),
     marketCapUsd = marketCapUsd.toDisplayableNumber(),
     changePercent24Hr = changePercent24Hr.toDisplayableNumber(),
-    iconRes = getDrawableIdForCoin(symbol)
-    )
+    iconRes = getDrawableIdForCoin(symbol),
+    lastUpdated = lastUpdated,
+)
 
-fun Double.toDisplayableNumber(): DisplayableNumber {
-    val formatter = NumberFormat.getNumberInstance(Locale.getDefault()).apply {
-        maximumFractionDigits = 2
-    }
 
-    return DisplayableNumber(
-        value = this,
-        formatted = formatter.format(this)
-    )
-}

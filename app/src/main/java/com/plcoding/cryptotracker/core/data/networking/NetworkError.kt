@@ -1,4 +1,6 @@
-package com.plcoding.cryptotracker.core.domain.util
+package com.plcoding.cryptotracker.core.data.networking
+
+import com.plcoding.cryptotracker.core.data.util.Error
 
 enum class NetworkError : Error {
     REQUEST_TIMEOUT,

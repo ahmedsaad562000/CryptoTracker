@@ -1,7 +1,7 @@
-package com.plcoding.cryptotracker.crypto.data.data_source
+package com.plcoding.cryptotracker.crypto.data.remote.data_source
 
-import com.plcoding.cryptotracker.core.domain.util.NetworkError
-import com.plcoding.cryptotracker.core.domain.util.Result
+import com.plcoding.cryptotracker.core.data.networking.NetworkError
+import com.plcoding.cryptotracker.core.data.util.Result
 import com.plcoding.cryptotracker.crypto.domain.models.Coin
 import com.plcoding.cryptotracker.crypto.domain.models.CoinHistory
 

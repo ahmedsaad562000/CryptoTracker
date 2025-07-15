@@ -1,14 +1,13 @@
-package com.plcoding.cryptotracker.crypto.data.data_source
+package com.plcoding.cryptotracker.crypto.data.remote.data_source
 
 import com.plcoding.cryptotracker.core.data.networking.constructUrl
-import com.plcoding.cryptotracker.core.data.networking.safeCall
-import com.plcoding.cryptotracker.core.domain.util.NetworkError
-import com.plcoding.cryptotracker.core.domain.util.Result
-import com.plcoding.cryptotracker.core.domain.util.map
-import com.plcoding.cryptotracker.crypto.data.dto.CoinDto
-import com.plcoding.cryptotracker.crypto.data.dto.CoinHistoryDto
-import com.plcoding.cryptotracker.crypto.data.mappers.toCoin
-import com.plcoding.cryptotracker.crypto.data.mappers.toCoinHistory
+import com.plcoding.cryptotracker.core.data.networking.NetworkError
+import com.plcoding.cryptotracker.core.data.networking.safeNetworkCall
+import com.plcoding.cryptotracker.core.data.util.Result
+import com.plcoding.cryptotracker.core.data.util.map
+import com.plcoding.cryptotracker.crypto.data.remote.dto.CoinDto
+import com.plcoding.cryptotracker.crypto.data.remote.dto.CoinHistoryDto
+import com.plcoding.cryptotracker.crypto.data.mapper.toDomain
 import com.plcoding.cryptotracker.crypto.domain.models.Coin
 import com.plcoding.cryptotracker.crypto.domain.models.CoinHistory
 import io.ktor.client.HttpClient
@@ -20,7 +19,7 @@ class CoinRemoteDataSourceImpl(private val httpClient: HttpClient) : CoinRemoteD
 
 
     override suspend fun getCoins(): Result<List<Coin>, NetworkError> {
-        return safeCall<List<CoinDto>> {
+        return safeNetworkCall<List<CoinDto>> {
             httpClient.get(
                 urlString = constructUrl("/markets")
             )
@@ -29,14 +28,14 @@ class CoinRemoteDataSourceImpl(private val httpClient: HttpClient) : CoinRemoteD
             }
         }.map { response ->
             response.map { coinDto ->
-                coinDto.toCoin()
+                coinDto.toDomain()
             }
         }
     }
 
     override suspend fun getCoinMarketChart(coinId: String): Result<CoinHistory, NetworkError> {
 
-        return safeCall<CoinHistoryDto> {
+        return safeNetworkCall<CoinHistoryDto> {
             httpClient.get(
                 urlString = constructUrl("/${coinId}/market_chart")
             )
@@ -45,7 +44,7 @@ class CoinRemoteDataSourceImpl(private val httpClient: HttpClient) : CoinRemoteD
                 parameter(key = "days", value = "1")
             }
         }.map { response ->
-            response.toCoinHistory()
+            response.toDomain()
         }
     }
 

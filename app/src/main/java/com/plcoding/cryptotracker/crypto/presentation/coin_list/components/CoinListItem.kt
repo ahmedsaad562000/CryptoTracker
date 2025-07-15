@@ -25,6 +25,7 @@ import com.plcoding.cryptotracker.ui.theme.CryptoTrackerTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import java.time.Instant
 
 
 @Composable
@@ -103,7 +104,8 @@ internal val previewCoin =  Coin(
     rank = 15,
     marketCapUsd = 15145415155.66,
     princeUsd =  256498.15 ,
-    changePercent24Hr = -0.1
+    changePercent24Hr = -0.1,
+    lastUpdated = Instant.now().toEpochMilli()
 ).toCoinUi()
 
 

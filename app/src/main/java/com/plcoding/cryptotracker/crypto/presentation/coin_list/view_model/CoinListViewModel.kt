@@ -2,9 +2,9 @@ package com.plcoding.cryptotracker.crypto.presentation.coin_list.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.plcoding.cryptotracker.core.domain.util.NetworkError
-import com.plcoding.cryptotracker.core.domain.util.onError
-import com.plcoding.cryptotracker.core.domain.util.onSuccess
+import com.plcoding.cryptotracker.core.data.util.Error
+import com.plcoding.cryptotracker.core.data.util.onError
+import com.plcoding.cryptotracker.core.data.util.onSuccess
 import com.plcoding.cryptotracker.crypto.domain.usecase.LoadCoinHistoryUseCase
 import com.plcoding.cryptotracker.crypto.domain.usecase.LoadCoinsUseCase
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.action.CoinListAction
@@ -31,7 +31,6 @@ class CoinListViewModel(
     init {
         observeActions()
     }
-
 
 
     private val _state = MutableStateFlow(CoinListViewState())
@@ -96,7 +95,7 @@ class CoinListViewModel(
         }
     }
 
-    private fun showToast(error: NetworkError) {
+    private fun showToast(error: Error) {
         viewModelScope.launch {
             _state.update {
                 it.copy(

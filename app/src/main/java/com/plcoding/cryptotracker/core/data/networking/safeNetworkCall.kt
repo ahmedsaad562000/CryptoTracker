@@ -1,14 +1,13 @@
 package com.plcoding.cryptotracker.core.data.networking
 
-import com.plcoding.cryptotracker.core.domain.util.NetworkError
-import com.plcoding.cryptotracker.core.domain.util.Result
+import com.plcoding.cryptotracker.core.data.util.Result
 import io.ktor.client.statement.HttpResponse
 import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.SerializationException
 import java.nio.channels.UnresolvedAddressException
 import kotlin.coroutines.coroutineContext
 
-suspend inline fun <reified T> safeCall(
+suspend inline fun <reified T> safeNetworkCall(
     execute: suspend () -> HttpResponse
 ): Result<T, NetworkError> {
     val response = try {

@@ -1,7 +1,7 @@
 package com.plcoding.cryptotracker.crypto.domain.models
 
 data class CoinHistory(
-    val marketCaps: List<CoinPrice>,
+    val coinId: String,
     val prices: List<CoinPrice>,
-    val totalVolumes: List<CoinPrice>
+    val lastUpdated : Long
 )
