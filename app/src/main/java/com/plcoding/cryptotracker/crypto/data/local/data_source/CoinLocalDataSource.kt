@@ -2,7 +2,6 @@ package com.plcoding.cryptotracker.crypto.data.local.data_source
 
 import com.plcoding.cryptotracker.core.data.local.LocalError
 import com.plcoding.cryptotracker.core.data.util.Result
-import com.plcoding.cryptotracker.crypto.data.local.entity.CoinHistoryEntity
 import com.plcoding.cryptotracker.crypto.domain.models.Coin
 import com.plcoding.cryptotracker.crypto.domain.models.CoinHistory
 

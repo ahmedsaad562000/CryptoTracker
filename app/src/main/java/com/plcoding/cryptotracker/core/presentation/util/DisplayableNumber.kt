@@ -8,7 +8,7 @@ data class DisplayableNumber(
     val formatted: String
 )
 
-public fun Double.toDisplayableNumber(): DisplayableNumber {
+fun Double.toDisplayableNumber(): DisplayableNumber {
     val formatter = NumberFormat.getNumberInstance(Locale.getDefault()).apply {
         maximumFractionDigits = 2
     }

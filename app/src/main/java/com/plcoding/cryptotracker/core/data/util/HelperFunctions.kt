@@ -13,7 +13,7 @@ public fun getDateTime(timestamp: Double): Date {
 }
 
 
-public fun getLastUpdatedString(timestamp: Long): String {
+fun getLastUpdatedString(timestamp: Long): String {
     val diff = System.currentTimeMillis() - timestamp
 
     val minutes = TimeUnit.MILLISECONDS.toMinutes(diff)
@@ -35,6 +35,6 @@ public fun getLastUpdatedString(timestamp: Long): String {
     }
 }
 
-public fun isoToMillis(isoString: String): Long {
+fun isoToMillis(isoString: String): Long {
     return Instant.parse(isoString).toEpochMilli()
 }
