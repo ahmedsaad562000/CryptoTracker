@@ -41,10 +41,8 @@ class CoinRepoImpl(
     }
 
     override suspend fun getCoinMarketChart(coinId: String): Result<CoinHistory, Error> {
-        Log.e("CoinRepoImpl", "getCoinMarketChart")
         return when (val result = coinRemoteDataSource.getCoinMarketChart(coinId = coinId)) {
             is Result.Success -> {
-                Log.e("CoinRepoImpl", "getCoinMarketChart network is not empty ${result.data}")
                 if (result.data.prices.isNotEmpty()) {
                     coinLocalDataSource.saveCoinHistory(
                         result.data.copy(
@@ -54,7 +52,6 @@ class CoinRepoImpl(
 
                     result
                 } else {
-                    Log.e("CoinRepoImpl", "getCoinMarketChart network is empty")
                     val localResult = coinLocalDataSource.getCoinMarketChart(coinId = coinId)
                     if (localResult is Result.Success) {
                         Result.Fallback(localResult.data, NetworkError.UNKNOWN)
