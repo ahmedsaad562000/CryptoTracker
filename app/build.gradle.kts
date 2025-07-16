@@ -43,7 +43,8 @@ android {
 
 
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -56,6 +57,22 @@ android {
                 value = "\"https://api.coingecko.com/api/v3/coins/\""
             )
             //////////////////////////////////
+        }
+
+
+        // 👇 Define your flavors here
+        flavorDimensions += "version" // You can name this anything
+        productFlavors {
+            create("free") {
+                dimension = "version"
+                applicationIdSuffix = ".free"
+                versionNameSuffix = "-free"
+            }
+//            create("pro") {
+//                dimension = "version"
+//                applicationIdSuffix = ".pro"
+//                versionNameSuffix = "-pro"
+//            }
         }
     }
     compileOptions {
