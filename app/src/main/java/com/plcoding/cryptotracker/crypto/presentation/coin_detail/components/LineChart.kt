@@ -37,6 +37,7 @@ import com.plcoding.cryptotracker.crypto.presentation.models.ValueLabel
 import com.plcoding.cryptotracker.ui.theme.CryptoTrackerTheme
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
@@ -406,7 +407,7 @@ private fun LineChartPreview() {
         val dataPoints = remember {
             coinHistoryRandomData.map { coinPrice ->
                 DataPoint(
-                    xLabel = SimpleDateFormat("ha\nd/M").format(coinPrice.dateTime),
+                    xLabel = SimpleDateFormat("ha\nd/M" , Locale.US).format(coinPrice.dateTime),
                     y = coinPrice.priceUsd.toFloat(),
                     x = coinPrice.dateTime.hours.toFloat()
                 )
