@@ -19,3 +19,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-dontwarn io.ktor.**
+-keepattributes *Annotation*, InnerClasses, Signature
+-dontnote kotlinx.serialization.SerializationKt
+-keep,includedescriptorclasses class com.*.*.**$$serializer { *; }
+-keepclassmembers class com.*.*.** {
+*** Companion;}
+-keepclasseswithmembers class com.*.*.** {
+kotlinx.serialization.KSerializer serializer(...);}
+-dontwarn org.slf4j.impl.StaticLoggerBinder
