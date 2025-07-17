@@ -1,12 +1,17 @@
 
+<h1><span style="color:teal">CryptoTracker</span></h1>
+<img src="app/src/main/res/drawable/icon2.png" width="100" height=100 alt="CryptoTracker Logo" style="margin-right: 10px; margin-bottom: 10px;">
 
-<img src="app/src/main/res/drawable/icon2.png" width="100" height=100 alt="CryptoTracker Logo" align="left" style="margin-right: 10px; margin-bottom: 10px;">
 
-<h1> CryptoTracker </h1>
 
 ## A simple Android app to track cryptocurrency prices using Jetpack Compose, Ktor, and Room.
 
 *This project is a demonstration of modern Android development practices, showcasing the use of MVI architecture, dependency injection with Koin, and a clean project structure. It is designed to be a simple yet effective example of how to build an Android application that tracks cryptocurrency prices, providing a solid foundation for further development and learning.*
+
+
+## 1- Video Demo
+
+
 
 ---
 
