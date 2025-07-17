@@ -1,19 +1,12 @@
 
----
 
-# 📱 CryptoTracker
+<img src="app/src/main/res/drawable/icon2.png" width="100" height=100 alt="CryptoTracker Logo" align="left" style="margin-right: 10px; margin-bottom: 10px;">
 
-## 1. 🧾 Project Overview
+<h1> CryptoTracker </h1>
 
-**App Name:** ***CryptoTracker***
-**Package Name:** 
-**Description:**
-**Target Audience:**
-**Platform:** Android
-**Minimum SDK:**
-**Target SDK:**
-**Architecture Pattern:** (e.g., MVVM, Clean Architecture)
-**Libraries Used:** (e.g., Room, Retrofit, Hilt, Jetpack Compose)
+## A simple Android app to track cryptocurrency prices using Jetpack Compose, Ktor, and Room.
+
+*This project is a demonstration of modern Android development practices, showcasing the use of MVI architecture, dependency injection with Koin, and a clean project structure. It is designed to be a simple yet effective example of how to build an Android application that tracks cryptocurrency prices, providing a solid foundation for further development and learning.*
 
 ---
 
@@ -21,19 +14,46 @@
 
 ```
 app/
-├── data/
-│   ├── local/         # Room DB, DAOs, Entities
-│   ├── remote/        # API services, DTOs
-│   ├── repository/    # Repository implementations
-├── domain/
-│   ├── model/         # Domain models
-│   ├── usecase/       # Use cases
+├── core/               # Core utilities and base classes
+│   ├── data/           # Data layer
+|   |   ├── local/      # Local data sources
+|   |   ├── networing/  # Networking utilities
+|   |   ├── util/       # Utility classes like Error interface , Result wrapper and helper functions
+│   ├── navigation/      # Navigation components
+│   ├── presentation/    # Presentation layer core classes
+|
+|
+├── crypto/                 # Feature module for Crypto tracking
+│   ├── data/               # Data layer for Crypto
+|   |   ├── local 
+|   |   |   ├── dao         # Data Access Objects
+|   |   |   ├── data_source # Local data sources
+|   |   |   ├── db          # AppDatabase class
+|   |   |   ├── entity      # Database entities
+|   |   ├── mapper          # Data mappers
+|   |   ├── remote          
+|   |   |   ├── data_source # Remote data sources
+|   |   |   ├── dto         # Data Transfer Objects
+|   |   ├── repo            # Repositories Implentation
+|   |
+|   |
+|   ├── domain/             # Domain layer for Crypto
+|   |   ├── model           # Domain models
+|   |   ├── repo            # Repositories interfaces
+|   |   ├── usecase        
+|
+|
 ├── presentation/
-│   ├── ui/            # Activities/Fragments/Composables
-│   ├── viewmodel/     # ViewModels using StateFlow/LiveData
-│   ├── navigation/    # NavGraph or Route management
-├── di/                # Dependency Injection (Hilt modules)
-├── utils/             # Helper classes and constants
+│   ├── coin_detail/        # Feature module for Coin Detail Screen
+│   ├── coin_list/          # Feature module for Coin List Screen    
+|   │   ├── action/         # Actions for UI events (Intent in MVI)
+|   │   ├── component/      
+|   │   ├── view/           
+|   │   ├── viewmodel/       
+|   │   ├── view_state/     # UI state
+│   ├── model/             
+├── di/                     # dependency injection modules using koin
+├── theme/                  # App theme and styles
 ```
 
 ---
@@ -43,105 +63,31 @@ app/
 List of major dependencies:
 
 * **Room** – Local storage
-* **Retrofit** – Network calls
-* **Hilt** – Dependency Injection
+* **Ktor** – Network calls
+* **koin** – Dependency Injection
 * **Navigation Component** – Navigation between screens
 * **Coroutines / Flow** – Asynchronous programming
-* **Jetpack Compose / XML** – UI
+* **Jetpack Compose / XML** – UI components (XML used for splash screen)
+
 
 ---
 
-## 4. 🌐 API Integration
+## 4. 📁 Build Variants (if any)
 
-**Base URL:** `https://api.example.com/`
-
-### Example API Call:
-
-* **Endpoint:** `/users/{id}`
-* **Method:** GET
-* **Headers:** Authorization
-* **Response:** JSON
-* **Handled in:** `UserRemoteDataSource.kt`, `UserRepositoryImpl.kt`
+| Variant       | Description         |
+| ------------- | ------------------- |
+| `freedebug`   | Development version |
+| `freeRelease` | Release version     |
 
 ---
 
-## 5. 🧠 Use Cases
+## 5. Notes
+- The app uses **MVI (Model-View-Intent)** architecture for better state management.
+- **Koin** is used for dependency injection to manage dependencies in a clean way.
+- The app is structured to separate concerns clearly, making it easier to maintain and extend.
+- Prices Chart is implemented using **Canvas** for custom drawing.
+- The app supports both **Dark Mode** and **Light Mode** themes.
+- The app is designed to be responsive and works well on different screen sizes.
+- The app includes a **splash screen** implemented using XML for compatibility with older Android versions.
 
-| Use Case    | Description                        | File                    |
-| ----------- | ---------------------------------- | ----------------------- |
-| GetUser     | Get user details by ID             | `GetUserUseCase.kt`     |
-| SaveUser    | Store user locally                 | `SaveUserUseCase.kt`    |
-| GetAllPosts | Retrieve all posts from the server | `GetAllPostsUseCase.kt` |
 
----
-
-## 6. 📊 ViewModels
-
-| ViewModel       | Purpose                          | State Managed    |
-| --------------- | -------------------------------- | ---------------- |
-| `UserViewModel` | Handles user state and actions   | `UserUiState.kt` |
-| `PostViewModel` | Manages posts fetching & display | `PostUiState.kt` |
-
----
-
-## 7. 🧪 Testing
-
-**Unit Tests:**
-
-* Domain logic and use cases tested with JUnit.
-
-**UI Tests:**
-
-* Espresso / Compose Testing Library
-
-**Mocking:**
-
-* MockK / Mockito
-
----
-
-## 8. 📁 Build Variants (if any)
-
-| Variant | Description         | Features               |
-| ------- | ------------------- | ---------------------- |
-| `dev`   | Development version | Debug logs, test APIs  |
-| `prod`  | Release version     | Crashlytics, real APIs |
-
----
-
-## 9. ⚠️ Error Handling
-
-* API Error → Mapped to `Result.Error`
-* No Internet → `IOException` catch block
-* Empty State → Empty UI State shown with proper message
-
----
-
-## 10. 📸 Screenshots (Optional but useful)
-
-| Screen Name      | Screenshot                      |
-| ---------------- | ------------------------------- |
-| Login Screen     | ![Login](path/to/image.png)     |
-| Dashboard Screen | ![Dashboard](path/to/image.png) |
-
----
-
-## 11. 📌 Future Improvements
-
-* Add pagination for large lists
-* Migrate to Jetpack Compose fully
-* Add dark mode support
-* Add localization
-
----
-
-## 12. 👥 Contributors
-
-| Name       | Role        |
-| ---------- | ----------- |
-| Ahmed Saad | Android Dev |
-| ...        | ...         |
-
----
-
-Let me know if you'd like this as a **Markdown file** or need a version customized for Jetpack Compose, Firebase, or another architecture.
