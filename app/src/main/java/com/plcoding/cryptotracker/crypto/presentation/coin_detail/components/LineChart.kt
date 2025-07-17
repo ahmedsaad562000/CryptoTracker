@@ -1,6 +1,5 @@
 package com.plcoding.cryptotracker.crypto.presentation.coin_detail.components
 
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures

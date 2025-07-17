@@ -56,6 +56,7 @@ android {
                 name = "BASE_URL",
                 value = "\"https://api.coingecko.com/api/v3/coins/\""
             )
+            signingConfig = signingConfigs.getByName("debug")
             //////////////////////////////////
         }
 
