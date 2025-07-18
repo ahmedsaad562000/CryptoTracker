@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp.plugin)
+    alias(libs.plugins.room)
+
 }
 
 
@@ -24,12 +27,53 @@ android {
     }
 
     buildTypes {
+
+        // add baseUrl as buildConfigField for debug
+
+        debug {
+            buildConfigField(
+                type = "String",
+                name = "BASE_URL",
+                value = "\"https://api.coingecko.com/api/v3/coins/\""
+            )
+        }
+
+        /////////////////////////
+
+
+
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // add baseUrl as  buildConfigField for release
+
+            buildConfigField(
+                type = "String",
+                name = "BASE_URL",
+                value = "\"https://api.coingecko.com/api/v3/coins/\""
+            )
+            signingConfig = signingConfigs.getByName("debug")
+            //////////////////////////////////
+        }
+
+
+        // 👇 Define your flavors here
+        flavorDimensions += "version" // You can name this anything
+        productFlavors {
+            create("free") {
+                dimension = "version"
+                applicationIdSuffix = ".free"
+                versionNameSuffix = "-free"
+            }
+//            create("pro") {
+//                dimension = "version"
+//                applicationIdSuffix = ".pro"
+//                versionNameSuffix = "-pro"
+//            }
         }
     }
     compileOptions {
@@ -49,12 +93,14 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
     debugImplementation(libs.bundles.compose.debug)
@@ -71,4 +117,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.bundles.room)
+    implementation(libs.gson)
 }
